@@ -1,1 +1,100 @@
 nothing is here yet! please wait till something gets uploaded!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen Links</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .link-list {
+            padding: 20px;
+        }
+        .link-list a {
+            display: block;
+            margin: 10px 0;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        #fullscreen-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 1000;
+        }
+        #url-bar {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-bottom: 1px solid #ccc;
+        }
+        #url-bar img {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+        }
+        #url-bar span {
+            flex-grow: 1;
+        }
+        #close-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100% - 40px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="link-list">
+        <a href="#" data-url="https://www.example.com">Open Example.com</a>
+        <a href="#" data-url="https://www.google.com">Open Google.com</a>
+        <a href="#" data-url="https://www.wikipedia.org">Open Wikipedia.org</a>
+    </div>
+
+    <div id="fullscreen-container">
+        <div id="url-bar">
+            <img id="favicon" src="" alt="favicon">
+            <span id="url"></span>
+            <button id="close-btn">X</button>
+        </div>
+        <iframe id="iframe" src=""></iframe>
+    </div>
+
+    <script>
+        document.querySelectorAll('.link-list a').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = this.dataset.url;
+                const favicon = `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}`;
+
+                document.getElementById('iframe').src = url;
+                document.getElementById('url').textContent = url;
+                document.getElementById('favicon').src = favicon;
+
+                document.getElementById('fullscreen-container').style.display = 'block';
+            });
+        });
+
+        document.getElementById('close-btn').addEventListener('click', function () {
+            document.getElementById('fullscreen-container').style.display = 'none';
+            document.getElementById('iframe').src = ''; // Stop the iframe content
+        });
+    </script>
+</body>
+</html>
